@@ -1,35 +1,18 @@
 <template>
-	<div id="app">
-		<img alt="Vue logo" src="./assets/logo.png" />
-		<HelloWorld msg="Welcome to Your Vue.js App" />
-	</div>
+  <div>
+    <header>
+      <router-link to="/login">로그인</router-link
+      ><!-- router-link를 통해서 다른 url로 보낼 수 있음 -->&nbsp;|&nbsp;
+      <router-link to="/signup">회원가입</router-link
+      ><!-- to라는 속성을 통해서 링크를 보냄 -->
+      <router-view></router-view
+      ><!-- 라우팅 된 모듈이 보이는 태그 -->
+    </header>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-import AppHeader from './components/common/AppHeader.vue';
-
-var a = 'hi';
-
-export default {
-	name: 'app',
-	components: {
-		HelloWorld,
-		AppHeader,
-	},
-	created() {
-		console.log('hi');
-	},
-};
+export default {};
 </script>
 
-<style>
-#app {
-	font-family: 'Avenir', Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
-}
-</style>
+<style scoped></style>
