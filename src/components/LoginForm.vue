@@ -1,52 +1,71 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div>
-      <label for="username">id : </label>
-      <input type="text" id="username" v-model="username" />
+  <div class="contents">
+    <div class="form-wrapper form-wrapper-sm">
+      <form @submit.prevent="submitForm" class="form">
+        <div>
+          <label for="username">id:</label>
+          <input id="username" type="text" v-model="username" />
+          <p class="validation-text">
+            <span class="warning" v-if="!isUsernameValid && username">
+              Please enter an email address
+            </span>
+          </p>
+        </div>
+        <div>
+          <label for="password">pw:</label>
+          <input id="password" type="text" v-model="password" />
+        </div>
+        <button
+          :disabled="!isUsernameValid || !password"
+          type="submit"
+          class="btn"
+        >
+          로그인
+        </button>
+      </form>
+      <p class="log">{{ logMessage }}</p>
     </div>
-    <div>
-      <label for="password">pw : </label>
-      <input type="text" id="password" v-model="password" />
-    </div>
-    <button :disabled="!isUsernameValid || !password" type="submit">
-      로그인
-    </button>
-    <p>{{ loginMessage }}</p>
-  </form>
+  </div>
 </template>
 
 <script>
 import { loginUser } from '@/api/index';
-import { validateEmail } from '@/util/validation';
+import { validateEmail } from '@/utils/validation';
 
 export default {
-  name: 'LoginForm.vue',
   data() {
     return {
+      // form values
       username: '',
       password: '',
-      loginMessage: '',
+      // log
+      logMessage: '',
     };
+  },
+  computed: {
+    isUsernameValid() {
+      return validateEmail(this.username);
+    },
   },
   methods: {
     async submitForm() {
       try {
+        // 비즈니스 로직
         const userData = {
           username: this.username,
           password: this.password,
         };
-
-        const {
-          data: { message, token },
-        } = await loginUser(userData);
-
-        console.log(message);
-        console.log(token);
-
-        this.loginMessage = `${this.username}님 환영합니다.`;
-      } catch (e) {
-        console.log(e.response);
-        this.loginMessage = e.response.data;
+        const { data } = await loginUser(userData);
+        this.$store.commit('setUsername', data.user.username);
+        this.$store.commit('setToken', data.token);
+        this.$router.push('/main');
+        // this.logMessage = `${data.user.username} 님 환영합니다`;
+        // this.initForm();
+      } catch (error) {
+        // 에러 핸들링할 코드
+        console.log(error.response.data);
+        this.logMessage = error.response.data;
+        // this.initForm();
       } finally {
         this.initForm();
       }
@@ -56,12 +75,11 @@ export default {
       this.password = '';
     },
   },
-  computed: {
-    isUsernameValid() {
-      return validateEmail(this.username);
-    },
-  },
 };
 </script>
 
-<style scoped></style>
+<style>
+.btn {
+  color: white;
+}
+</style>

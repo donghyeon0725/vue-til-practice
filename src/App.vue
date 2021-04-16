@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="app">
     <AppHeader></AppHeader>
-    <router-view></router-view
-    ><!-- 라우팅 된 모듈이 보이는 태그 -->
+    <div class="app-contents">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -16,4 +17,7 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+@import './css/reset.css';
+@import './css/common.css';
+</style>

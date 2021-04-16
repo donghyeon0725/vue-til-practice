@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
-const LoginPage = () => import('@/views/LoginPage.vue');
-const SignupPage = () => import('@/views/SignupPage.vue');
+// import LoginPage from '@/views/LoginPage.vue';
+// import SignupPage from '@/views/SignupPage.vue';
 
 Vue.use(VueRouter);
 
@@ -15,15 +14,19 @@ export default new VueRouter({
     },
     {
       path: '/login',
-      component: LoginPage,
+      component: () => import('@/views/LoginPage.vue'),
     },
     {
       path: '/signup',
-      component: SignupPage,
+      component: () => import('@/views/SignupPage.vue'),
+    },
+    {
+      path: '/main',
+      component: () => import('@/views/MainPage.vue'),
     },
     {
       path: '*',
-      component: () => import('@/views/NotFountPage.vue'),
+      component: () => import('@/views/NotFoundPage.vue'),
     },
   ],
 });
