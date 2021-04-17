@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '@/store/index';
 // import LoginPage from '@/views/LoginPage.vue';
 // import SignupPage from '@/views/SignupPage.vue';
-import store from '@/store/index';
 
 Vue.use(VueRouter);
 
@@ -45,10 +45,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.auth && !store.getters.isLogin) {
-    console.log('인증이 필요합니다.');
+    console.log('인증이 필요합니다');
     next('/login');
-    // 라우터 내부에서 라우터를 호출할 것이 아니라, 제공하는 api인 next를 사용한다.
-    //this.$router.push('/login');
     return;
   }
   next();
