@@ -6,14 +6,14 @@ import {
   saveAuthToCookie,
   saveUserToCookie,
 } from '@/utils/cookies';
-import { loginUser } from '@/api';
+import { loginUser } from '@/api/auth';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    username: getAuthFromCookie() || '',
-    token: getUserFromCookie() || '',
+    username: getUserFromCookie() || '',
+    token: getAuthFromCookie() || '',
   },
   getters: {
     isLogin(state) {
@@ -32,16 +32,13 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    // 첫번째 인자로 store가 제공되고, commit이라는 키워드로 mutations를 호출할 수 있다.
     async LOGIN({ commit }, userData) {
       const { data } = await loginUser(userData);
-
+      console.log(data.token);
       commit('setToken', data.token);
       commit('setUsername', data.user.username);
-
       saveAuthToCookie(data.token);
       saveUserToCookie(data.user.username);
-
       return data;
     },
   },
