@@ -1,6 +1,6 @@
 <template>
   <div class="contents">
-    <h1 class="page-header">Create Post</h1>
+    <h1 class="page-header">Edit Post</h1>
     <div class="form-wrapper">
       <form class="form" @submit.prevent="submitForm">
         <div>
@@ -17,7 +17,7 @@
             Contents length must be less than 250
           </p>
         </div>
-        <button type="submit" class="btn">Create</button>
+        <button type="submit" class="btn">Modify</button>
       </form>
       <p class="log">
         {{ logMessage }}
@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import { createPost } from '@/api/posts';
-
+import { fetchPost, modifyPost } from '@/api/posts';
 export default {
+  name: 'PostEditForm',
   data() {
     return {
       title: '',
@@ -39,23 +39,34 @@ export default {
   },
   computed: {
     isContentsValid() {
-      return this.contents.length <= 200;
+      return this.contents.length <= 250;
     },
   },
   methods: {
     async submitForm() {
+      const id = this.$route.params.id;
+
+      const postData = {
+        title: this.title,
+        contents: this.contents,
+      };
+
       try {
-        const response = await createPost({
-          title: this.title,
-          contents: this.contents,
-        });
-        this.$router.push('/main');
+        const response = await modifyPost(id, postData);
         console.log(response);
-      } catch (error) {
-        console.log(error.response.data.message);
-        this.logMessage = error.response.data.message;
+        this.$router.push('/main');
+      } catch ({ response }) {
+        this.logMessage = response.data.message;
       }
     },
+  },
+  async created() {
+    // 비동기 함수를 사용하기 때문에, 값을 받아온 뒤, 실행하려면 async 키워드가 필요하다
+    const id = this.$route.params.id;
+    const { data } = await fetchPost(id);
+    console.log(data);
+    this.title = data.title;
+    this.contents = data.contents;
   },
 };
 </script>
