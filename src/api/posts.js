@@ -16,4 +16,14 @@ function deletePost(postId) {
   return posts.delete(postId);
 }
 
-export { fetchPosts, createPost, deletePost };
+// 특정 학습 노트 데이터를 가져오는 API
+function fetchPost(postId) {
+  return posts.get(postId);
+}
+
+// 학습 노트를 수정하는 API
+function modifyPost(postId, postData) {
+  return posts.put(postId, postData);
+}
+
+export { fetchPosts, createPost, deletePost, fetchPost, modifyPost };
