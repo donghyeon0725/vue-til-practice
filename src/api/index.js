@@ -1,28 +1,33 @@
 import axios from 'axios';
 import { setInterceptors } from './common/interceptors';
 
-// 조금 더 깔끔한 코드 작성을 위해서 함수로 묶었다.
-function getInstance() {
+// 액시오스 초기화 함수
+function createInstance() {
   const instance = axios.create({
     baseURL: process.env.VUE_APP_API_URL,
   });
   return setInterceptors(instance);
 }
-const instance = getInstance();
+const instance = createInstance();
 
-// 회원가입 api
+// 회원가입 API
 function registerUser(userData) {
   return instance.post('signup', userData);
 }
 
-// 로그인 api
+// 로그인 API
 function loginUser(userData) {
   return instance.post('login', userData);
 }
 
-// 학습 노트 데이터를 조회하는 api
+// 학습 노트 데이터를 조회하는 API
 function fetchPosts() {
   return instance.get('posts');
 }
 
-export { registerUser, loginUser, fetchPosts };
+// 포스트를 생성하는 API
+function createPost(postData) {
+  return instance.post('posts', postData);
+}
+
+export { registerUser, loginUser, fetchPosts, createPost };

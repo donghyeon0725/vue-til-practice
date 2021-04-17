@@ -14,7 +14,6 @@
 
 <script>
 export default {
-  name: 'PostListItem',
   props: {
     postItem: {
       type: Object,
@@ -24,4 +23,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style></style>
