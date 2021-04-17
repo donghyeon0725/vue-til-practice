@@ -25,4 +25,9 @@ function fetchPosts() {
   return instance.get('posts');
 }
 
-export { registerUser, loginUser, fetchPosts };
+// 포스트를 생성하는 API
+function createPost(postData) {
+  return instance.post('posts', postData);
+}
+
+export { registerUser, loginUser, fetchPosts, createPost };

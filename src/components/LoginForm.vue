@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { loginUser } from '@/api/index';
 import { validateEmail } from '@/utils/validation';
 
 export default {
@@ -55,10 +54,10 @@ export default {
           username: this.username,
           password: this.password,
         };
-        const { data } = await loginUser(userData);
-        console.log(data.token);
-        this.$store.commit('setToken', data.token);
-        this.$store.commit('setUsername', data.user.username);
+
+        // LOGIN이 비동기로 작동하는 동작이기 때문에 await를 붙여주지 않으면, 이 동작이 완료 되기 이전에 다음 동작이 실행되어 버린다.
+        const response = await this.$store.dispatch('LOGIN', userData);
+        console.log(response);
         this.$router.push('/main');
       } catch (error) {
         // 에러 핸들링할 코드
