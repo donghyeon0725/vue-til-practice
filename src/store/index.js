@@ -5,6 +5,7 @@ import {
   getUserFromCookie,
   saveAuthToCookie,
   saveUserToCookie,
+  deleteCookie,
 } from '@/utils/cookies';
 import { loginUser } from '@/api/auth';
 
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     setToken(state, token) {
       state.token = token;
     },
+    clearToken(state) {
+      state.token = '';
+    },
   },
   actions: {
     async LOGIN({ commit }, userData) {
@@ -40,6 +44,12 @@ export default new Vuex.Store({
       saveAuthToCookie(data.token);
       saveUserToCookie(data.user.username);
       return data;
+    },
+    LOGOUT({ commit }) {
+      commit('clearUsername');
+      commit('clearToken');
+      deleteCookie('til_auth');
+      deleteCookie('til_user');
     },
   },
 });
